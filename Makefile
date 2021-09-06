@@ -80,12 +80,12 @@ $(FT_DIR)/$(FT):
 
 $(SERVER): $(SERVER_OBJ) $(FT_DIR)/$(FT)
 	@printf "$(GREEN)"
-	$(CC) $(LDFLAGS) $(LDLIBS) $(SERVER_OBJ) -o $@
+	$(CC) $(SERVER_OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 	@printf "$(RESET)"
 
 $(CLIENT): $(CLIENT_OBJ) $(FT_DIR)/$(FT)
 	@printf "$(GREEN)"
-	$(CC) $(LDFLAGS) $(LDLIBS) $(CLIENT_OBJ) -o $@
+	$(CC) $(CLIENT_OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 	@printf "$(RESET)"
 
 $(OBJ_DIR):
