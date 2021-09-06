@@ -23,7 +23,8 @@ static void	send_char(char c, pid_t pid)
 			if (kill(pid, SIGUSR2) < 0)
 				ft_perror(CLIENT, E_KILL_FAIL);
 		}
-		pause();
+		usleep(10);
+//		pause();
 	}
 }
 
@@ -42,6 +43,7 @@ void	handler(int signal, siginfo_t *info, void *ctx)
 	const char *sig;
 
 	(void)ctx;
+	(void)info;
 	if (signal == SIGUSR1)
 		sig = sig1;
 	else
@@ -61,7 +63,7 @@ int	main(int argc, char *argv[])
 	sigaddset(&set, SIGUSR1);
 	sigaddset(&set, SIGUSR2);
 	sa.sa_mask = set;
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &sa, NULL) < 0 || sigaction(SIGUSR2, &sa, NULL) < 0)
 		ft_perror(SERVER, E_SIGACT_FAIL);
 	send_string(argv[2], ft_atoi(argv[1]));

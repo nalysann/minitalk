@@ -12,6 +12,7 @@ void	handler(int signal, siginfo_t *info, void *ctx)
 	static int	pos = 0;
 
 	(void)ctx;
+	(void)info;
 	if (signal == SIGUSR1)
 		ch |= 1 << pos;
 	pos++;
@@ -21,8 +22,10 @@ void	handler(int signal, siginfo_t *info, void *ctx)
 		pos = 0;
 		ch = 0;
 	}
-	if (kill(info->si_pid, signal) < 0)
-		ft_perror(SERVER, E_KILL_FAIL);
+//	write(STDERR_FILENO, "hui\n", 4);
+//	usleep(1000);
+//	if (kill(info->si_pid, signal) < 0)
+//		ft_perror(SERVER, E_KILL_FAIL);
 }
 
 int main()
