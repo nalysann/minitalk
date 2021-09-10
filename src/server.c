@@ -8,40 +8,34 @@
 
 void	handler(int signal, siginfo_t *info, void *ctx)
 {
-	static unsigned char	ch = 0;
-	static int	pos = 0;
+	static unsigned char c = 0;
+	static int shift = 0;
 
 	(void)ctx;
-	(void)info;
 	if (signal == SIGUSR1)
-		ch |= 1 << pos;
-	pos++;
-	if (pos == 8)
+		c |= 1 << shift;
+	if (++shift == BYTE_SIZE)
 	{
-		write(STDOUT_FILENO, &ch, sizeof(ch));
-		pos = 0;
-		ch = 0;
+		write(STDOUT_FILENO, &c, sizeof(c));
+		c = 0;
+		shift = 0;
 	}
-//	write(STDERR_FILENO, "hui\n", 4);
-//	usleep(1000);
-//	if (kill(info->si_pid, signal) < 0)
-//		ft_perror(SERVER, E_KILL_FAIL);
+	if (kill(info->si_pid, signal) < 0)
+		ft_perror(SERVER, E_KILL_FAIL);
 }
 
 int main()
 {
 	struct sigaction	sa;
-	sigset_t	set;
 
+	ft_printf("Server pid is %d\n", getpid());
 	sa.sa_sigaction = handler;
-	sigemptyset(&set);
-	sigaddset(&set, SIGUSR1);
-	sigaddset(&set, SIGUSR2);
-	sa.sa_mask = set;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGUSR1);
+	sigaddset(&sa.sa_mask, SIGUSR2);
 	sa.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &sa, NULL) < 0 || sigaction(SIGUSR2, &sa, NULL) < 0)
 		ft_perror(SERVER, E_SIGACT_FAIL);
-	ft_printf("Server pid is %d\n", getpid());
-	while(1)
+	while (1)
 		pause();
 }
