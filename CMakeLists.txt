@@ -19,3 +19,15 @@ add_executable(client
         src/client.c)
 
 target_link_libraries(client ft)
+
+add_executable(server_bonus
+        include/minitalk.h
+        src/server_bonus.c)
+
+target_link_libraries(server ft)
+
+add_executable(client_bonus
+        include/minitalk.h
+        src/client_bonus.c)
+
+target_link_libraries(client ft)

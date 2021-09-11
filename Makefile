@@ -15,6 +15,16 @@ CLIENT_SRC := client.c
 CLIENT_OBJ := $(CLIENT_SRC:.c=.o)
 CLIENT_DEP := $(CLIENT_SRC:.c=.d)
 
+SERVER_SRC_BONUS := server_bonus.c
+
+SERVER_OBJ_BONUS := $(SERVER_SRC_BONUS:.c=.o)
+SERVER_DEP_BONUS := $(SERVER_SRC_BONUS:.c=.d)
+
+CLIENT_SRC_BONUS := client_bonus.c
+
+CLIENT_OBJ_BONUS := $(CLIENT_SRC_BONUS:.c=.o)
+CLIENT_DEP_BONUS := $(CLIENT_SRC_BONUS:.c=.d)
+
 # **************************************************************************** #
 
 FT_DIR := libft
@@ -34,6 +44,14 @@ SERVER_DEP := $(addprefix $(OBJ_DIR)/, $(SERVER_DEP))
 
 CLIENT_OBJ := $(addprefix $(OBJ_DIR)/, $(CLIENT_OBJ))
 CLIENT_DEP := $(addprefix $(OBJ_DIR)/, $(CLIENT_DEP))
+
+SERVER_BONUS := $(addprefix $(OBJ_DIR)/, $(SERVER))
+SERVER_OBJ_BONUS := $(addprefix $(OBJ_DIR)/, $(SERVER_OBJ_BONUS))
+SERVER_DEP_BONUS := $(addprefix $(OBJ_DIR)/, $(SERVER_DEP_BONUS))
+
+CLIENT_BONUS := $(addprefix $(OBJ_DIR)/, $(CLIENT))
+CLIENT_OBJ_BONUS := $(addprefix $(OBJ_DIR)/, $(CLIENT_OBJ_BONUS))
+CLIENT_DEP_BONUS := $(addprefix $(OBJ_DIR)/, $(CLIENT_DEP_BONUS))
 
 # **************************************************************************** #
 
@@ -73,7 +91,15 @@ all:
 	@printf "$(CYAN)>>> Making $(CLIENT) <<<\n$(RESET)"
 	@$(MAKE) $(CLIENT)
 
-bonus: all
+bonus:
+	@printf "$(CYAN)>>> Making $(FT_DIR) <<<\n$(RESET)"
+	@$(MAKE) -C $(FT_DIR)
+	@printf "$(CYAN)>>> Making $(SERVER) <<<\n$(RESET)"
+	@$(MAKE) $(SERVER_BONUS)
+	@cp $(SERVER_BONUS) $(SERVER)
+	@printf "$(CYAN)>>> Making $(CLIENT) <<<\n$(RESET)"
+	@$(MAKE) $(CLIENT_BONUS)
+	@cp $(CLIENT_BONUS) $(CLIENT)
 
 $(FT_DIR)/$(FT):
 	@$(MAKE) -C $(FT_DIR)
@@ -88,6 +114,16 @@ $(CLIENT): $(CLIENT_OBJ) $(FT_DIR)/$(FT)
 	$(CC) $(CLIENT_OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 	@printf "$(RESET)"
 
+$(SERVER_BONUS): $(SERVER_OBJ_BONUS) $(FT_DIR)/$(FT)
+	@printf "$(GREEN)"
+	$(CC) $(SERVER_OBJ_BONUS) -o $@ $(LDFLAGS) $(LDLIBS)
+	@printf "$(RESET)"
+
+$(CLIENT_BONUS): $(CLIENT_OBJ_BONUS) $(FT_DIR)/$(FT)
+	@printf "$(GREEN)"
+	$(CC) $(CLIENT_OBJ_BONUS) -o $@ $(LDFLAGS) $(LDLIBS)
+	@printf "$(RESET)"
+
 $(OBJ_DIR):
 	@mkdir -p $@
 
@@ -98,6 +134,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 -include $(SERVER_DEP)
 -include $(CLIENT_DEP)
+
+-include $(SERVER_DEP_BONUS)
+-include $(CLIENT_DEP_BONUS)
 
 clean:
 	@printf "$(CYAN)>>> Cleaning $(FT_DIR) <<<\n$(RESET)"
