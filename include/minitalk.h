@@ -24,7 +24,7 @@
 
 # define BYTE_SIZE 8
 
-# define T_SLEEP 75
+# define T_SLEEP 100
 
 # define ACK_N 0
 # define ACK_Y 1
