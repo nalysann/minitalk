@@ -28,5 +28,5 @@ using UNIX signals.
 Build with ``make`` or ``make bonus``, then:
 
 - Launch the server with ``./server``, it will display it's PID
-- Launch the client with ``./client <server_pid> <message>``
+- Launch the client with ``./client <server pid> <message>``
 - Enjoy results
